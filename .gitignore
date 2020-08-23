@@ -1,1 +1,9 @@
+# Misc
 requirements.pdf
+
+# Environment
+.env
+env/
+
+# Logs
+*.log
