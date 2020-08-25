@@ -48,31 +48,31 @@ def get_fever_event(temperature: float):
             return FEVER_END
 
     elif temperature > FEVER_THRESHOLD:
-	    TEMP_OVER_THRESHOLD = 1
-	    TEMP_UNDER_THRESHOLD = 0
-	    return FEVER_START
+        TEMP_OVER_THRESHOLD = 1
+        TEMP_UNDER_THRESHOLD = 0
+        return FEVER_START
 
     elif TEMP_OVER_THRESHOLD == 1:
-	    TEMP_UNDER_THRESHOLD +=1
-	
+        TEMP_UNDER_THRESHOLD +=1
+    
     else: 
-	    TEMP_UNDER_THRESHOLD = TEMP_UNDER_THRESHOLD
+        TEMP_UNDER_THRESHOLD = TEMP_UNDER_THRESHOLD
     
     return None
 
 def current_time():
-     return round(time.time(),1)
+    return round(time.time(),1)
 
 
 
 def write_in_firebase(event,time):
-      if not event:
-         return 
-      data = {
+    if not event:
+        return 
+    data = {
         'Time':time,
         'Event':event
-             }
-      result = firebase.post('iotproject-45a41/EVENTS',data)     
+            }
+    result = firebase.post('iotproject-45a41/EVENTS',data)     
 
 
 def main():
