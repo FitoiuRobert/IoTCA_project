@@ -5,6 +5,7 @@ import random
 import argparse
 import logging
 import sys
+import database as db
 from firebase import firebase
 
 parser = argparse.ArgumentParser()
@@ -46,28 +47,24 @@ def get_fever_event(temperature: float):
     if TEMP_UNDER_THRESHOLD == MAX_END_FEVER:
             TEMP_UNDER_THRESHOLD = 0
             return FEVER_END
-
     elif temperature > FEVER_THRESHOLD:
         TEMP_OVER_THRESHOLD = 1
         TEMP_UNDER_THRESHOLD = 0
         return FEVER_START
-
     elif TEMP_OVER_THRESHOLD == 1:
         TEMP_UNDER_THRESHOLD +=1
-    
     else: 
         TEMP_UNDER_THRESHOLD = TEMP_UNDER_THRESHOLD
     
     return None
 
-def current_time():
+def get_current_time():
     return round(time.time(),1)
 
-
-
-def write_in_firebase(event,time):
+def send_to_firebase(event,time):
     if not event:
-        return 
+        return
+
     data = {
         'Time':time,
         'Event':event
@@ -76,11 +73,19 @@ def write_in_firebase(event,time):
 
 
 def main():
+    conn = db.create_connection(db.DB_FILE)
+    with conn:
+        db.create_db(conn)
+
     while True:
         temperature = read_temperature()
         fever_event = get_fever_event(temperature)
-        current_t=current_time()
-        write_in_firebase(fever_event,current_t)
+        current_time = get_current_time()
+
+        send_to_firebase(fever_event,current_time)
+        with conn:
+            db.insert_row(conn, current_time, temperature, fever_event, db.TABLE_NAME)
+
         log("temperature:{}".format(temperature))
         log("TEMP_UNDER_THRESHOLD:{}".format(TEMP_UNDER_THRESHOLD))
         log("TEMP_OVER_THRESHOLD:{}".format(TEMP_OVER_THRESHOLD))

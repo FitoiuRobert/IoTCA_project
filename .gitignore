@@ -1,9 +1,17 @@
 # Misc
 requirements.pdf
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Environment
 .env
 env/
 
 # Logs
 *.log
+
+# Database
+*.db
