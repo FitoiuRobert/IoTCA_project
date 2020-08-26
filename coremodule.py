@@ -87,7 +87,7 @@ def main():
         fever_event = get_fever_event(temperature)
         current_time = get_current_time()
 
-        # send_to_firebase(fever_event,current_time)
+        send_to_firebase(fever_event,current_time)
         with conn:
             db.insert_row(conn, current_time, temperature, fever_event, db.TABLE_NAME)
 

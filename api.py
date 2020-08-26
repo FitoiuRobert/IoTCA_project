@@ -29,10 +29,6 @@ def show_temperature():
 def show_fever():
     return 'fever'
 
-@app.route('/')
-def hello_world():
-    return {}
-
 
 def get_temp_measurements(start_date: int, end_date: int):
     conn = db.create_connection(db.DB_FILE)
