@@ -8,6 +8,7 @@ import sys
 import database as db
 from firebase import firebase
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--simulation',action='store_true')
 parser.add_argument('-v', '--verbose', action='store_true')
@@ -32,6 +33,7 @@ SLEEP_DURATION: int = args.sleep
 
 firebase=firebase.FirebaseApplication("https://iotproject-45a41.firebaseio.com/",None)
 
+
 def read_temperature():
     if args.simulation:
         temperature = round(random.uniform(36, 42),2)
@@ -39,6 +41,7 @@ def read_temperature():
         sys.exit("ops I didn't knew how to implement this part")
 
     return temperature
+
 
 def get_fever_event(temperature: float):
     global TEMP_UNDER_THRESHOLD
@@ -58,8 +61,10 @@ def get_fever_event(temperature: float):
     
     return None
 
+
 def get_current_time():
-    return round(time.time(),1)
+    return int(time.time())
+
 
 def send_to_firebase(event,time):
     if not event:
@@ -82,7 +87,7 @@ def main():
         fever_event = get_fever_event(temperature)
         current_time = get_current_time()
 
-        send_to_firebase(fever_event,current_time)
+        # send_to_firebase(fever_event,current_time)
         with conn:
             db.insert_row(conn, current_time, temperature, fever_event, db.TABLE_NAME)
 
@@ -92,6 +97,7 @@ def main():
         log("fever_event:{}".format(fever_event))
 
         time.sleep(SLEEP_DURATION)
+
 
 if __name__ == "__main__":
     main()

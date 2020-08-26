@@ -5,10 +5,12 @@ import os
 import sys
 import time
 
+
 __db_file_name="TEMPERATURE.db"
 __path_to_db=os.path.dirname(os.path.abspath(__file__))
 DB_FILE=os.path.join(__path_to_db, __db_file_name)
 TABLE_NAME="TEMPERATURE"
+
 
 def create_connection(DB_FILE, read_only=False):
     conn = None
@@ -19,6 +21,7 @@ def create_connection(DB_FILE, read_only=False):
 
     return conn
 
+
 def get_all_rows(conn, table_name=TABLE_NAME):
     cur = conn.cursor()
     statement="SELECT * FROM {}".format(table_name)
@@ -26,6 +29,7 @@ def get_all_rows(conn, table_name=TABLE_NAME):
     rows = cur.fetchall()
 
     return rows
+
 
 def create_db(conn, table_name=TABLE_NAME):
     cur = conn.cursor()
@@ -37,9 +41,11 @@ def insert_row(conn, timestamp, temperature, event, table_name=TABLE_NAME):
     statement="INSERT INTO {} (timestamp, temperature, event) VALUES (?,?,?)".format(TABLE_NAME)
     cur.execute(statement, (timestamp, temperature, event))
 
+
 if __name__ == "__main__":
     test_db_file = 'test.db'
     test_db_table = 'test'
+
 
     conn = create_connection("test.db")
     with conn:
