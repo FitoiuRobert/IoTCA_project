@@ -3,7 +3,7 @@
 import time
 import random
 import argparse
-import logging
+import logging as log
 import sys
 import database as db
 from firebase import firebase
@@ -14,15 +14,19 @@ import plotly.offline as ply
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--simulation',action='store_true')
 parser.add_argument('-v', '--verbose', action='store_true')
+parser.add_argument('-l', '--log-path',help="Path to log")
 parser.add_argument('--sleep',type=int, default=30, help='Sleep duration between temperature reading')
 parser.add_argument('-f', '--fever-threshold', type=float, default=41,
                         help='Threshold temperature for fever events')
 args = parser.parse_args()
 
 
-log = logging.debug
 if args.verbose:
-    logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+    if args.log_path:
+        log.basicConfig(filename=args.log_path, filemode='w', level=log.DEBUG)
+    else:
+        log.basicConfig(stream=sys.stdout, level=log.DEBUG)
+
 
 
 FEVER_START: str = 'FEVER_START_EVENT'
@@ -66,31 +70,31 @@ def get_fever_event(temperature: float):
     return None
 
 def write_in_plotly(temp_under_threshold,temperature,time):
-     global X
-     global Y
-     global data
-     global fig
-     if temp_under_threshold != MAX_END_FEVER:
-          X.append(time)
-          Y.append(temperature)
-          data=[go.Scatter(
-               x = X,
-               y = Y,
-               name = "Temperature by Time",
-               line = dict(
-                    color = ("green"),
-                    width = 4,
-                    dash = 'dashdot'
-               )
-           )]
-          layout = dict(
-             title = "Temperature readings until Fever_End",
-             xaxis = dict(title = "Time"),
-             yaxis = dict(title = "Temperature")
-          )
-          fig = dict(data = data,layout = layout)
-     if temp_under_threshold == MAX_END_FEVER:
-          ply.plot(fig, filename='test.html')
+    global X
+    global Y
+    global data
+    global fig
+    if temp_under_threshold != MAX_END_FEVER:
+        X.append(time)
+        Y.append(temperature)
+        data=[go.Scatter(
+            x = X,
+            y = Y,
+            name = "Temperature by Time",
+            line = dict(
+                color = ("green"),
+                width = 4,
+                dash = 'dashdot'
+            )
+        )]
+        layout = dict(
+            title = "Temperature readings until Fever_End",
+            xaxis = dict(title = "Time"),
+            yaxis = dict(title = "Temperature")
+        )
+        fig = dict(data = data,layout = layout)
+    if temp_under_threshold == MAX_END_FEVER:
+        ply.plot(fig, filename='test.html')
 
 
 def get_current_time():
@@ -123,10 +127,10 @@ def main():
         with conn:
             db.insert_row(conn, current_time, temperature, fever_event, db.TABLE_NAME)
 
-        log("temperature:{}".format(temperature))
-        log("TEMP_UNDER_THRESHOLD:{}".format(TEMP_UNDER_THRESHOLD))
-        log("TEMP_OVER_THRESHOLD:{}".format(TEMP_OVER_THRESHOLD))
-        log("fever_event:{}".format(fever_event))
+        log.debug("temperature:{}".format(temperature))
+        log.debug("TEMP_UNDER_THRESHOLD:{}".format(TEMP_UNDER_THRESHOLD))
+        log.debug("TEMP_OVER_THRESHOLD:{}".format(TEMP_OVER_THRESHOLD))
+        log.debug("fever_event:{}".format(fever_event))
 
         time.sleep(SLEEP_DURATION)
 
