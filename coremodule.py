@@ -46,7 +46,10 @@ def read_temperature():
     if args.simulation:
         temperature = round(random.uniform(36, 42),2)
     else:
-        sys.exit("ops I didn't knew how to implement this part")
+        # https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/
+        from w1thermsensor import W1ThermSensor
+        sensor = W1ThermSensor()
+        temperature = round(sensor.get_temperature(),2)
 
     return temperature
 

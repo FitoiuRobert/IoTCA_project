@@ -37,7 +37,7 @@ def show_fever():
     if not start_date or not end_date:
         abort(400)
 
-    events = get_fever_events(start_date, end_date)
+    events = get_fever_events_measurements(start_date, end_date)
     response = {
         "start_date": start_date,
         "end_date": end_date,
@@ -65,7 +65,7 @@ def get_raw_temp_measurements(start_date: int, end_date: int):
     return m
 
 
-def get_fever_events(start_date: int, end_date: int):
+def get_fever_events_measurements(start_date: int, end_date: int):
     conn = db.create_connection(db.DB_FILE)
     with conn:
         rows = db.get_all_rows(conn, db.TABLE_NAME)
@@ -110,5 +110,4 @@ def get_fever_events(start_date: int, end_date: int):
 
 
 if __name__ == "__main__":
-    print("Hello {}".format(__file__))
     app.run(debug=True, port=5051)
