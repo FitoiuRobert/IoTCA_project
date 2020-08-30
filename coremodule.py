@@ -44,14 +44,14 @@ firebase=firebase.FirebaseApplication("https://iotproject-45a41.firebaseio.com/"
 
 def read_temperature():
     if args.simulation:
-        temperature = round(random.uniform(36, 42),2)
+        temperature = random.uniform(36, 42)
     else:
         # https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/
         from w1thermsensor import W1ThermSensor
         sensor = W1ThermSensor()
-        temperature = round(sensor.get_temperature(),2)
+        temperature = sensor.get_temperature()
 
-    return temperature
+    return round(temperature,1)
 
 
 def get_fever_event(temperature: float):

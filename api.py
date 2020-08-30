@@ -97,7 +97,7 @@ def apply_operation(aggregation_list: list, operator_type: str):
     elif operator_type == 'MAX':
         value = max(aggregation_list)
 
-    return value
+    return round(value,1)
 
 
 def get_aggregated_temp_measurements(start_date: int, end_date: int, aggregation_type: str, operator_type: str):
