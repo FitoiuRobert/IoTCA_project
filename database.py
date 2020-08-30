@@ -6,7 +6,7 @@ import sys
 import time
 
 
-__db_file_name="TEMPERATURE_TEST.db"
+__db_file_name="TEMPERATURE.db"
 __path_to_db=os.path.dirname(os.path.abspath(__file__))
 DB_FILE=os.path.join(__path_to_db, __db_file_name)
 TABLE_NAME="TEMPERATURE"
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     conn = create_connection(DB_FILE)
     with conn:
         create_db(conn, TABLE_NAME)
-        # insert_row(conn,time.time(), 37.2, None, TABLE_NAME)
+        insert_row(conn,time.time(), 37.2, None, TABLE_NAME)
         rows = get_all_rows(conn, TABLE_NAME)
 
     for row in rows:
