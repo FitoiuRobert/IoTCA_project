@@ -22,6 +22,12 @@ def create_connection(DB_FILE, read_only=False):
     return conn
 
 
+def create_db(conn, table_name=TABLE_NAME):
+    cur = conn.cursor()
+    statement="CREATE TABLE IF NOT EXISTS {} (timestamp TIMESTAMP, temperature NUMBER, event VARCHAR(30))".format(TABLE_NAME)
+    cur.execute(statement)
+
+
 def get_all_rows(conn, table_name=TABLE_NAME):
     cur = conn.cursor()
     statement="SELECT * FROM {}".format(table_name)
@@ -31,11 +37,6 @@ def get_all_rows(conn, table_name=TABLE_NAME):
     return rows
 
 
-def create_db(conn, table_name=TABLE_NAME):
-    cur = conn.cursor()
-    statement="CREATE TABLE IF NOT EXISTS {} (timestamp TIMESTAMP, temperature NUMBER, event VARCHAR(30))".format(TABLE_NAME)
-    cur.execute(statement)
-
 def insert_row(conn, timestamp, temperature, event, table_name=TABLE_NAME):
     cur = conn.cursor()
     statement="INSERT INTO {} (timestamp, temperature, event) VALUES (?,?,?)".format(TABLE_NAME)
@@ -43,14 +44,11 @@ def insert_row(conn, timestamp, temperature, event, table_name=TABLE_NAME):
 
 
 if __name__ == "__main__":
-    test_db_file = 'test.db'
-    test_db_table = 'test'
-
-
-    conn = create_connection("test.db")
+    conn = create_connection(DB_FILE)
     with conn:
-        create_db(conn, test_db_table)
-        insert_row(conn,time.time(), 37.2, None, test_db_table)
-        rows = get_all_rows(conn, test_db_table)
+        create_db(conn, TABLE_NAME)
+        # insert_row(conn,time.time(), 37.2, None, TABLE_NAME)
+        rows = get_all_rows(conn, TABLE_NAME)
 
-    print("Hello {}".format(__file__))
+    for row in rows:
+        print(row)
