@@ -6,7 +6,7 @@ import sys
 import time
 
 
-__db_file_name="TEMPERATURE.db"
+__db_file_name="TEMPERATURE_TEST.db"
 __path_to_db=os.path.dirname(os.path.abspath(__file__))
 DB_FILE=os.path.join(__path_to_db, __db_file_name)
 TABLE_NAME="TEMPERATURE"
