@@ -16,7 +16,7 @@ parser.add_argument('-s', '--simulation',action='store_true')
 parser.add_argument('-v', '--verbose', action='store_true')
 parser.add_argument('-l', '--log-path',help="Path to log")
 parser.add_argument('--sleep',type=int, default=30, help='Sleep duration between temperature reading')
-parser.add_argument('-f', '--fever-threshold', type=float, default=41,
+parser.add_argument('-f', '--fever-threshold', type=float, default=37.2,
                         help='Threshold temperature for fever events')
 args = parser.parse_args()
 
