@@ -103,7 +103,7 @@ Falsk API which uses the data from database having 2 endpoints:<br>
 __temperature__:
 <br>`http://localhost:5051/temperature?start=<timestamp>&end=<timestamp>`
 <br>`http://localhost:5051/temperature?start=<timestamp>&end=<timestamp>&aggregation=<aggregation_type>&operator=<operator_type>`
-<br>Where the values for the second requests are:
+<br>Where the values for the second request are:
 
 - __aggregation_type__: `HOURLY`, `DAILY` 
 - __operator_type__: `AVERAGE`, `MEDIAN`, `MAX`
