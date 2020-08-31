@@ -12,11 +12,14 @@ import plotly.offline as ply
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--simulation',action='store_true')
-parser.add_argument('-v', '--verbose', action='store_true')
-parser.add_argument('-l', '--log-path',help="Path to log")
+parser.add_argument('-f', '--firebase-url', type=str, required=True, help="Firebase storage URL")
+parser.add_argument('-s', '--simulation', action='store_true',
+                        help="Runs in simulation mode, generating random temperature values instead \
+                        of reading from sensor")
+parser.add_argument('-v', '--verbose', action='store_true', help="Prints debug messages")
+parser.add_argument('-l', '--log-path',help="Path to to log. Only valid if 'verbose' is specified")
 parser.add_argument('--sleep',type=int, default=30, help='Sleep duration between temperature reading')
-parser.add_argument('-f', '--fever-threshold', type=float, default=37.2,
+parser.add_argument('-t', '--fever-threshold', type=float, default=37.2,
                         help='Threshold temperature for fever events')
 args = parser.parse_args()
 
@@ -39,7 +42,8 @@ SLEEP_DURATION: int = args.sleep
 X: int=[]
 Y: int=[]
 
-firebase=firebase.FirebaseApplication("https://iotproject-45a41.firebaseio.com/",None)
+# firebase=firebase.FirebaseApplication("https://iotproject-45a41.firebaseio.com/",None)
+firebase=firebase.FirebaseApplication(args.firebase_url ,None)
 
 
 def read_temperature():
