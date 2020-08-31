@@ -1,6 +1,9 @@
 ## Members
 Baciu Dragos Marian, Fitou Robert Claudiu
-<br><br><br>
+<br>
+- Github repository: https://github.com/FitoiuRobert/IoTCA_project#table-of-contents
+
+<br><br>
 
 
 ## Table of Contents
@@ -8,6 +11,7 @@ Baciu Dragos Marian, Fitou Robert Claudiu
 2. [ Project setup](#proj-setup)
 3. [ Database ](#database)
 4. [ Core module ](#coremodule)
+5. [ Web API ](#api)
 <br><br>
 
 
@@ -55,13 +59,13 @@ Database table layout:<br>
 <br>The following values can be modified customized inside database.py:
 - `__db_file_name`: name of the database file
 - `TABLE_NAME`: name of the table that is going to be used by sqlite3 module
-
+<br><br>
 
 <a name="coremodule"></a>
 
 ## coremodule.py
-Usage:
-```bash
+__Usage__
+```text
 $ ./coremodule.py  --help
 usage: coremodule.py [-h] -f FIREBASE_URL [-s] [-v] [-l LOG_PATH] [--sleep SLEEP] [-t FEVER_THRESHOLD]
 
@@ -77,12 +81,36 @@ optional arguments:
   -t FEVER_THRESHOLD, --fever-threshold FEVER_THRESHOLD
                         Threshold temperature for fever events
 ```
+__Firebase__
+- Writes events in Firebase. Receives the events and the current time and while it is an event will be writen along with the current time, in firebase . ***Replace `FIREBASE_URL` with your own url***.
+<img src=".img/firebase.png" width="30%" height="30%" alt="Firebase">
+<br>
 
-- Writes events in firebase. Receives the events and the current time and while it is an event will be writen along with the current time, in firebase . ***Change `FirebaseApplication` url to your own url***.
-![firebase_screenshot](.img/firebase.png "Firebase Screenshot")
-- Graphs temperatures using Plotly.It receive temperature and time and draw an dashed graph using them.Generated plotly file is called **test.html**
-![plotly_screenshot](.img/plotly.png "Plotly Screenshot")
+__Plotly__
 
+- Graphs temperatures using Plotly. It receive temperature and time and draw an dashed graph using them.Generated plotly file is called **test.html**.<br>
+<img src=".img/plotly.png" width="30%" height="30%" alt="Plotly">
+
+<br><br>
+
+
+<a name="api"></a>
+
+## api.py
+
+Falsk API which uses the data from database having 2 endpoints:<br>
+
+__temperature__:
+<br>`http://localhost:5051/temperature?start=<timestamp>&end=<timestamp>`
+<br>`http://localhost:5051/temperature?start=<timestamp>&end=<timestamp>&aggregation=<aggregation_type>&operator=<operator_type>`
+<br>Where the values for the second requests are:
+
+- __aggregation_type__: `HOURLY`, `DAILY` 
+- __operator_type__: `AVERAGE`, `MEDIAN`, `MAX`
+
+__fever__:
+<br>`http://localhost:5051/fever?start=<timestamp>&end=<timestamp>`
+<br><br>Any other request will return "Bad request 400" response.
 
 
 
