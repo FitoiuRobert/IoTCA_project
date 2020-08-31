@@ -56,7 +56,7 @@ Database table layout:<br>
 
 <br>Creates a database file named `TEMPERATURE.db` in the same directory with database.py
 <br>To view the databse file content you can use: http://inloop.github.io/sqlite-viewer/
-<br>The following values can be modified customized inside database.py:
+<br>The following values can be customized inside database.py:
 - `__db_file_name`: name of the database file
 - `TABLE_NAME`: name of the table that is going to be used by sqlite3 module
 <br><br>
