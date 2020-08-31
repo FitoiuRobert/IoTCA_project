@@ -6,10 +6,13 @@ Baciu Dragos Marian, Fitou Robert Claudiu
 ## Table of Contents
 1. [ Quickstart ](#quickstart)
 2. [ Project setup](#proj-setup)
-
+3. [ Database ](#database)
+4. [ Core module ](#coremodule)
 <br><br>
 
+
 <a name="quickstart"></a>
+
 ## Quckstart
 ```sh
 $ . venv.sh
@@ -20,8 +23,10 @@ $ ./api.py
 ```
 <br><br>
 
+
 <a name="proj-setup"></a>
 ## Project setup
+
 - __coremodule.py__ - Core module of the project, which is responsible for reading temperature (from senor or
     generates random values) and storing it to database, writes events in Firebase and graphs temperature data
     using Plotly.
@@ -33,7 +38,45 @@ $ ./api.py
 - __requirements.txt__ - pip3 requirements file
 <br><br>
 
-**coremodule.py** :
+
+<a name="database"></a>
+## database.py
+
+Database table layout:<br>
+| timestamp|temperature|event|
+|----------|:---------:|----:|
+|1591124008896|37.4|FEVER_FEVER_START|
+|1591124009161|35.2|None|
+|...|...|...|
+|1591124009161|36.8|FEVER_FEVER_END|
+
+<br>Creates a database file named `TEMPERATURE.db` in the same directory with database.py
+<br>To view the databse file content you can use: http://inloop.github.io/sqlite-viewer/
+<br>The following values can be modified customized inside database.py:
+- `__db_file_name`: name of the database file
+- `TABLE_NAME`: name of the table that is going to be used by sqlite3 module
+
+
+<a name="coremodule"></a>
+
+## coremodule.py
+Usage:
+```bash
+$ ./coremodule.py  --help
+usage: coremodule.py [-h] -f FIREBASE_URL [-s] [-v] [-l LOG_PATH] [--sleep SLEEP] [-t FEVER_THRESHOLD]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FIREBASE_URL, --firebase-url FIREBASE_URL
+                        Firebase storage URL
+  -s, --simulation      Runs in simulation mode, generating random temperature values instead of reading from sensor
+  -v, --verbose         Prints debug messages
+  -l LOG_PATH, --log-path LOG_PATH
+                        Path to to log. Only valid if 'verbose' is specified
+  --sleep SLEEP         Sleep duration between temperature reading
+  -t FEVER_THRESHOLD, --fever-threshold FEVER_THRESHOLD
+                        Threshold temperature for fever events
+```
 
 - Writes events in firebase. Receives the events and the current time and while it is an event will be writen along with the current time, in firebase . ***Change `FirebaseApplication` url to your own url***.
 ![firebase_screenshot](.img/firebase.png "Firebase Screenshot")
